@@ -1,4 +1,14 @@
-small change
+After downloading the zip file and unzipping it (you can put it in users/name/Desktop/): 
+- open the command prompt and change directories to be in server
+- type in the following commands: 
+    cmd 
+    npm install
+    npm run dev 
+- open another tab in command prompt and change directories to be in client: 
+- run the same commands 
+- in web browser, type in localhost:5173
+
+
 a. How can the grader start the web server? 
 b. Is there a second server needed for your React application? If so, explain how to start.
 
