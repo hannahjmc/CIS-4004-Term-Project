@@ -1,12 +1,14 @@
-After downloading the zip file and unzipping it (you can put it in users/name/Desktop/): 
-- open the command prompt and change directories to be in server
-- type in the following commands: 
-    cmd 
-    npm install
-    npm run dev 
-- open another tab in command prompt and change directories to be in client: 
-- run the same commands 
-- in web browser, type in localhost:5173
+After downloading the zip file and unzipping it (you can copy/paste or put it in users/name/Desktop/): 
+    - open the command prompt and change directories to be in server
+    - type in the following commands: 
+        cmd 
+        npm install
+        npm run dev 
+    - open another tab in command prompt and change directories to be in client: 
+    - run the same commands 
+    - in web browser, type in localhost:5173
+
+fyi: if you make changes to it and commit and you want to test those changes, you will have to do a merge request and download the zip file again to test if it works. Another way to test, is to test it locally by opening the local files in visual studio and making changes there. 
 
 
 a. How can the grader start the web server? 
