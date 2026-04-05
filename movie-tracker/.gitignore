@@ -3,11 +3,6 @@ node_modules/
 client/node_modules/
 server/node_modules/
 
-# Environment variables (VERY IMPORTANT)
-.env
-client/.env
-server/.env
-
 # Logs
 logs
 *.log
@@ -29,8 +24,3 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Misc
-*.env.local
-*.env.development.local
-*.env.test.local
-*.env.production.local
