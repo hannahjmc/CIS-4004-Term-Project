@@ -3,6 +3,8 @@ After downloading the zip file and unzipping it (you can copy/paste or put it in
     - type in the following commands: 
         cmd 
         npm install
+        npm install cors 
+        npm install mongodb 
         npm run dev 
     - open another tab in command prompt and change directories to be in client: 
     - run the same commands 
