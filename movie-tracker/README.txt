@@ -35,6 +35,7 @@ http://localhost:5173
 The .env file contains: 
 PORT=5000
 MONGO_URI=mongodb://127.0.0.1:27017/movie_tracker
+JWT_SECRET=secretkey
 
 d. What Collections are needed in MongoDB?
 movies
