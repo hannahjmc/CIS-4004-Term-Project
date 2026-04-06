@@ -9,8 +9,13 @@ export default function MoviesPage() {
   const [reviewForms, setReviewForms] = useState({});
 
   const loadMovies = async () => {
-    const data = await apiRequest('/movies', 'GET', null, token);
-    setMovies(data);
+    try {
+      const data = await apiRequest('/movies', 'GET', null, token);
+      setMovies(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error('Error loading movies:', error);
+      setMovies([]);
+    }
   };
 
   useEffect(() => {
@@ -25,21 +30,37 @@ export default function MoviesPage() {
   };
 
   const addToWatchlist = async (movieId) => {
-    await apiRequest('/watchlist', 'POST', { movie: movieId, priority: 'medium' }, token);
-    alert('Added to watchlist');
+    try {
+      await apiRequest('/watchlist', 'POST', { movie: movieId, priority: 'medium' }, token);
+      alert('Added to watchlist');
+    } catch (error) {
+      alert('Could not add to watchlist. Maybe already added!');
+    }
   };
 
   const addToWatched = async (movieId) => {
-    await apiRequest('/watched', 'POST', { movie: movieId, userRating: 5, notes: '' }, token);
-    alert('Added to watched list');
+    try {
+      await apiRequest('/watched', 'POST', { movie: movieId, userRating: 5, notes: '' }, token);
+      alert('Added to watched list');
+    } catch (error) {
+      alert('Could not add to watched list. Maybe already added!');
+    }
   };
 
   const submitReview = async (movieId) => {
-    const review = reviewForms[movieId] || { rating: 5, comment: '' };
-    await apiRequest('/reviews', 'POST', { movie: movieId, rating: Number(review.rating), comment: review.comment }, token);
-    alert('Review submitted');
+  try {
+    const review = reviewForms[movieId] || {};
+    const rating = parseInt(review.rating) || 5;
+    const comment = review.comment || '';
+    await apiRequest('/reviews', 'POST', { movie: movieId, rating, comment }, token);
+    alert('Review submitted!');
     setReviewForms((prev) => ({ ...prev, [movieId]: { rating: 5, comment: '' } }));
-  };
+    await loadMovies();
+  } catch (error) {
+    alert('Could not submit review. Maybe you already reviewed this movie!');
+    console.error(error);
+  }
+};
 
   return (
     <div>

@@ -8,6 +8,7 @@ export default function AdminPage() {
   const [movies, setMovies] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [newUser, setNewUser] = useState({ username: '', password: '', role: 'user' });
+  const [editingMovie, setEditingMovie] = useState(null); // track which movie is being edited
 
   const loadData = async () => {
     const [usersData, moviesData, reviewsData] = await Promise.all([
@@ -43,6 +44,28 @@ export default function AdminPage() {
 
   const deleteReview = async (id) => {
     await apiRequest(`/reviews/${id}`, 'DELETE', null, token);
+    loadData();
+  };
+
+  const startEditMovie = (movie) => {
+    setEditingMovie({ ...movie }); // load movie data into edit form
+  };
+
+  const cancelEdit = () => {
+    setEditingMovie(null);
+  };
+
+  const saveEditMovie = async (e) => {
+    e.preventDefault();
+    await apiRequest(`/movies/${editingMovie._id}`, 'PUT', {
+      title: editingMovie.title,
+      description: editingMovie.description,
+      genre: editingMovie.genre,
+      director: editingMovie.director,
+      releaseYear: Number(editingMovie.releaseYear),
+      posterUrl: editingMovie.posterUrl,
+    }, token);
+    setEditingMovie(null);
     loadData();
   };
 
@@ -82,10 +105,33 @@ export default function AdminPage() {
 
       <div className="card">
         <h2>Manage Movies</h2>
+
+        {/* Edit Movie Form */}
+        {editingMovie && (
+          <div className="card" style={{ border: '2px solid #4a90e2', marginBottom: '1rem' }}>
+            <h3>Edit Movie</h3>
+            <form onSubmit={saveEditMovie}>
+              <input placeholder="Title" value={editingMovie.title} onChange={(e) => setEditingMovie({ ...editingMovie, title: e.target.value })} required />
+              <input placeholder="Genre" value={editingMovie.genre} onChange={(e) => setEditingMovie({ ...editingMovie, genre: e.target.value })} />
+              <input placeholder="Director" value={editingMovie.director} onChange={(e) => setEditingMovie({ ...editingMovie, director: e.target.value })} />
+              <input placeholder="Release Year" value={editingMovie.releaseYear} onChange={(e) => setEditingMovie({ ...editingMovie, releaseYear: e.target.value })} required />
+              <input placeholder="Poster URL" value={editingMovie.posterUrl} onChange={(e) => setEditingMovie({ ...editingMovie, posterUrl: e.target.value })} />
+              <textarea placeholder="Description" value={editingMovie.description} onChange={(e) => setEditingMovie({ ...editingMovie, description: e.target.value })} />
+              <div className="button-row">
+                <button type="submit">Save Changes</button>
+                <button type="button" onClick={cancelEdit}>Cancel</button>
+              </div>
+            </form>
+          </div>
+        )}
+
         {movies.map((movie) => (
           <div key={movie._id} className="row-between">
             <span>{movie.title} ({movie.releaseYear})</span>
-            <button onClick={() => deleteMovie(movie._id)}>Delete</button>
+            <div className="button-row">
+              <button onClick={() => startEditMovie(movie)}>Edit</button>
+              <button onClick={() => deleteMovie(movie._id)}>Delete</button>
+            </div>
           </div>
         ))}
       </div>
