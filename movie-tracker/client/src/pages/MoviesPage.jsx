@@ -35,11 +35,17 @@ export default function MoviesPage() {
   };
 
   const submitReview = async (movieId) => {
-    const review = reviewForms[movieId] || { rating: 5, comment: '' };
-    await apiRequest('/reviews', 'POST', { movie: movieId, rating: Number(review.rating), comment: review.comment }, token);
-    alert('Review submitted');
-    setReviewForms((prev) => ({ ...prev, [movieId]: { rating: 5, comment: '' } }));
-  };
+  const review = { rating: 5, comment: '', ...(reviewForms[movieId] || {}) };
+
+  await apiRequest('/reviews', 'POST', {
+    movie: movieId,
+    rating: Number(review.rating),
+    comment: review.comment
+  }, token);
+
+  alert('Review submitted');
+  setReviewForms((prev) => ({ ...prev, [movieId]: { rating: 5, comment: '' } }));
+};
 
   return (
     <div>
